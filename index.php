@@ -1,12 +1,6 @@
 <?php 
-  // connect to database
-  $conn = mysqli_connect('localhost', 'bnx', 'test123', 'pizza');
 
-  // check conn
-  if(!$conn){
-      echo 'connection error: ' . mysqli_connect_error();
-  }
-
+  include('config/db_connect.php');
   // query for all pizzas
   $sql = 'SELECT title, ingredients, id FROM pizzas ORDER BY created_at';
 
@@ -36,15 +30,15 @@
 <h4 class= "center grey-text">Pizzas!</h4>
 <div class = "container">
   <div class ="row">
-     <?php foreach($pizzas as $pizza){ ?>
+     <?php foreach($pizzas as $pizza): ?>
          <div class ="col s6 md3">
             <div class ="card z-depth-0">
                <div class ="card-content center">
                   <h6><?php echo htmlspecialchars($pizza['title'])?></h6>
                   <ul>
-                     <?php foreach(explode(',', $pizza['ingredients']) as $ing){ ?>
+                     <?php foreach(explode(',', $pizza['ingredients']) as $ing): ?>
                      <li><?php echo htmlspecialchars($ing);?></li>
-                     <?php } ?>
+                     <?php endforeach; ?>
                   </ul>
                </div>
                <div class ="card-action right-align">
@@ -52,7 +46,12 @@
                </div>
             </div>
          </div>
-     <?php }?>
+      <?php endforeach; ?>
+      <?php if(count($pizzas) >= 2): ?>
+      <p>two or more pizzas</p>
+      <?php else: ?>
+      <p> less than 2</p>
+      <?php endif; ?>
   </div>
 </div>
 

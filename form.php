@@ -1,5 +1,5 @@
 <?php 
-
+include('config/db_connect.php');
 $errors = array('email' =>'', 'title' => '', 'ingredients' => '');
 $email = '';
 $title = '';
@@ -41,10 +41,24 @@ if(isset($_POST['submit'])){
 
     if(!array_filter($errors)){
         header('Location: content2.php');
-    } // else{
+    }  else{
+        $email = mysqli_real_scape_string($conn, $_POST['email']);
+        $title = mysqli_real_scape_string($conn, $_POST['title']);
+        $ingredients= mysqli_real_scape_string($conn, $_POST['ingredients']);
         // echo 'form is valid';
-        // header('Location: content2.php');
-   // }
+
+        //create sql
+        $sql = "INSERT INTO pizzas(title,email,ingredients) VALUES('$title', '$email', '$ingredients')";
+
+        //save to db and check
+        if(mysql_query($conn, $sql)){
+            //success
+            header('Location: indexdd.php');
+        }else{
+            //error
+            echo 'query error: ' . mysqli_error($conn);
+        }
+    }
 
 }
 
